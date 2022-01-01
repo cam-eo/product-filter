@@ -1,0 +1,18 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: max-content;
+    height: 700px;
+}
+.imageContainer{
+    display: flex;
+    width: 100%;
+    object-fit: contain;
+    position: absolute;
+    z-index: -1;
+}
+
+.innerContainer{
+    /* z-index: 0; */
+}

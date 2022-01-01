@@ -1,0 +1,14 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    /* width: 100%; */
+    /* background-color: aqua; */
+    height: 300px;
+}
+
+.colourOptionsContainer{
+    display: flex;
+    flex-wrap: wrap;
+    width: 300px;
+    justify-content: space-between;
+}

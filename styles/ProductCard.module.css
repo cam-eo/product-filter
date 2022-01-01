@@ -1,0 +1,11 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+}
+
+.detailContainer{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}

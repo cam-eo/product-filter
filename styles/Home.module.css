@@ -1,8 +1,8 @@
 .container {
-  padding: 0 2rem;
+  /* padding: 0 2rem; */
 }
 
-.main {
+/* .main {
   min-height: 100vh;
   padding: 4rem 0;
   flex: 1;
@@ -113,4 +113,4 @@
     width: 100%;
     flex-direction: column;
   }
-}
+} */
