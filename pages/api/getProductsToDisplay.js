@@ -5,7 +5,9 @@ export default function getProductsToDisplay(filters, productIndex, numberOfProd
     let rowIndex = 0
     let rowData = []
     let outputProducts = []
-    const tempProductsToDisplay = miista.data.allContentfulProductPage.edges.splice(productIndex, numberOfProductsPerPage)
+
+    const miistaData = miista.data.allContentfulProductPage.edges.sort()
+    const tempProductsToDisplay = miistaData.slice(productIndex, numberOfProductsPerPage + productIndex)
 
     for(let k = 0; k < tempProductsToDisplay.length ; k++){
 

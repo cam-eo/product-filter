@@ -21,7 +21,9 @@ const Products = () => {
     }, [])
 
     function handlePagePress(page, pageIndex){
-        const tempProductsToDisplay = getProductsToDisplay([], ((page*numberOfProductsPerPage)-numberOfProductsPerPage), numberOfProductsPerPage)
+
+        const productIndex = (page*numberOfProductsPerPage)-numberOfProductsPerPage
+        const tempProductsToDisplay = getProductsToDisplay([], productIndex, numberOfProductsPerPage)
 
         setActivePageIndex(pageIndex)
         setProductsToDisplay(tempProductsToDisplay)
@@ -41,9 +43,10 @@ const Products = () => {
                             imageUrl={product.node.thumbnailImage.file.url} />)}
                 </div>))}
                 <div className={styles.pagesContainer}>
-                    <div className={styles.pagesArrowContainer}><span>{"<"}</span></div>
+                    <div className={styles.pagesArrowContainer}><span>{"<"}</span>
+                    </div>
                     {pages.map((page, m) => m < pages.length-1 ? 
-                        <div onClick={()=> handlePagePress(page)} key={m} style={{
+                        <div onClick={()=> handlePagePress(page, m)} key={m} style={{
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
