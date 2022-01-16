@@ -7,6 +7,15 @@ export default function getProductsToDisplay(filters, productIndex, numberOfProd
     let outputProducts = []
 
     const miistaData = miista.data.allContentfulProductPage.edges.sort()
+
+    const miistaFiltered = miista.data.allContentfulProductPage.edges.filter(product => {
+        for(let i = 0; i < filters.length ;i++){
+            
+        }
+    })
+
+
+
     const tempProductsToDisplay = miistaData.slice(productIndex, numberOfProductsPerPage + productIndex)
 
     for(let k = 0; k < tempProductsToDisplay.length ; k++){

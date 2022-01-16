@@ -4,7 +4,6 @@ import ProductCard from './ProductCard'
 import miista from '../pages/api/miista-export.json'
 import getProductsToDisplay from '../pages/api/getProductsToDisplay'
 
-
 const Products = () => {
 
     const [pages, setPages] = useState([])
@@ -36,12 +35,15 @@ const Products = () => {
                 <div 
                     className={styles.row}
                     key={i}>
-                    {rowData.map((product, j) => <ProductCard 
+                    {rowData.map((product, j) => 
+                    <ProductCard 
                             key={j}
                             productDescription={product.node.name}
                             productPrice={product.node.shopifyProductEu.variants.edges[0].node.price}
-                            imageUrl={product.node.thumbnailImage.file.url} />)}
-                </div>))}
+                            imageUrl={product.node.thumbnailImage.file.url} />
+                            )}
+                </div>)
+                )}
                 <div className={styles.pagesContainer}>
                     <div className={styles.pagesArrowContainer}><span>{"<"}</span>
                     </div>

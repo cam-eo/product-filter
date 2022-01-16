@@ -1,6 +1,37 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useReducer } from 'react'
 import styles from '../styles/Filter.module.css'
 import miista from '../pages/api/miista-export.json'
+
+const initialState = { filters: { colors: [], priceRanges: [], categories: [] } }
+
+function reducer(state, action) {
+    switch (action.type) {
+        case 'ADD_COLOR_FILTER':
+            const newFilters = state.filters
+            const newColorFilters = state.filters.colors
+
+            newColorFilters.push(action.colorToAdd)
+            newFilters.colors = newColorFilters
+
+            return { ...state, filters: newFilters }
+        case 'REMOVE_COLOR_FILTER': 
+            const newFilterss = state.filters
+            const newColorFilterss = state.filters.colors
+            
+            const colorFilterIndexx = newColorFilterss.findIndex(
+                (color) => color === action.colorToRemove
+            )
+
+            newColorFilterss.splice(colorFilterIndexx, 1)
+            newFilterss.colors = newColorFilters
+
+            return { ...state, filters: newFilters }
+        default:
+            return state
+    }
+}
+
+
 
 const Filter = () => {
 
@@ -8,6 +39,9 @@ const Filter = () => {
     const [maxPrice, setMaxPrice] = useState(0)
     const [priceBins, setPriceBins] = useState([])
     const [availableCategories, setAvailableCategories] = useState([])
+    const [state, dispatch] = useReducer(reducer, initialState)
+
+    console.log("state: ", state)
 
     useEffect(() => {
 
@@ -46,14 +80,32 @@ const Filter = () => {
         setPriceBins(binsTemp)
     }, [availableColors, maxPrice, availableCategories])
 
+    function colorItemPress(pushColor){
+        dispatch({
+            type: 'ADD_COLOR_FILTER',
+            colorToAdd: pushColor
+        })
+    }
+    function removeColorFilter(pushColor){
+        dispatch({
+            type: 'REMOVE_COLOR_FILTER',
+            colorToRemove: pushColor
+        })
+    }
+
     return (
         <div className={styles.container}>
             <span>X</span>
+            <div>
+                <span>COLORRS</span>
+                {state.filters.colors.map((colorFilter, f)=> <div onClick={()=>removeColorFilter(colorFilter)} key={f}><span>{colorFilter}</span></div>)}
+            </div>
             <span>CLEAR FILTER</span>
             <div>
                 <span>COLOR: </span>
                 <div className={styles.colourOptionsContainer}>
-                    {availableColors?.map((color, i) => <span style={{ backgroundColor: `${color.toLowerCase()}`, width: 20, height: 20, borderRadius: 10 }} key={i}></span>)}
+                    {availableColors?.map((color, i) => 
+                    <span onClick={()=> colorItemPress(color)} style={{ backgroundColor: `${color.toLowerCase()}`, width: 20, height: 20, borderRadius: 10 }} key={i}></span>)}
                 </div>
             </div>
             <div>
