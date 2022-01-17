@@ -1,5 +1,7 @@
 # Product filtering example
 
+NextJS
+
 ## Comments from Cam
 
 Really not my best work. I haven't had much spare time to work on this :(
