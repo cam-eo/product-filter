@@ -1,37 +1,7 @@
 import { useState, useEffect, useReducer } from 'react'
 import styles from '../styles/Filter.module.css'
 import miista from '../pages/api/miista-export.json'
-
-const initialState = { filters: { colors: [], priceRanges: [], categories: [] } }
-
-function reducer(state, action) {
-    switch (action.type) {
-        case 'ADD_COLOR_FILTER':
-            const newFilters = state.filters
-            const newColorFilters = state.filters.colors
-
-            newColorFilters.push(action.colorToAdd)
-            newFilters.colors = newColorFilters
-
-            return { ...state, filters: newFilters }
-        case 'REMOVE_COLOR_FILTER': 
-            const newFilterss = state.filters
-            const newColorFilterss = state.filters.colors
-            
-            const colorFilterIndexx = newColorFilterss.findIndex(
-                (color) => color === action.colorToRemove
-            )
-
-            newColorFilterss.splice(colorFilterIndexx, 1)
-            newFilterss.colors = newColorFilters
-
-            return { ...state, filters: newFilters }
-        default:
-            return state
-    }
-}
-
-
+import { useStateValue } from '../stateManagement/StateProvider';
 
 const Filter = () => {
 
@@ -39,9 +9,7 @@ const Filter = () => {
     const [maxPrice, setMaxPrice] = useState(0)
     const [priceBins, setPriceBins] = useState([])
     const [availableCategories, setAvailableCategories] = useState([])
-    const [state, dispatch] = useReducer(reducer, initialState)
-
-    console.log("state: ", state)
+    const [state, dispatch] = useStateValue()
 
     useEffect(() => {
 
@@ -80,7 +48,7 @@ const Filter = () => {
         setPriceBins(binsTemp)
     }, [availableColors, maxPrice, availableCategories])
 
-    function colorItemPress(pushColor){
+    function addColorFilter(pushColor){
         dispatch({
             type: 'ADD_COLOR_FILTER',
             colorToAdd: pushColor
@@ -93,19 +61,34 @@ const Filter = () => {
         })
     }
 
+    function addCategoryFilter(pushCategory){
+        dispatch({
+            type: 'ADD_CATEGORY_FILTER',
+            categoryToAdd: pushCategory
+        })
+    }
+    function removeCategoryFilter(pushCategory){
+        dispatch({
+            type: 'REMOVE_CATEGORY_FILTER',
+            categoryToRemove: pushCategory
+        })
+    }
+
     return (
         <div className={styles.container}>
             <span>X</span>
             <div>
                 <span>COLORRS</span>
-                {state.filters.colors.map((colorFilter, f)=> <div onClick={()=>removeColorFilter(colorFilter)} key={f}><span>{colorFilter}</span></div>)}
+                {state.filters.colors.map((colorFilter, fc)=> <div onClick={()=>removeColorFilter(colorFilter)} key={fc}><span>{colorFilter}</span></div>)}
+                <span>CATEGORIES</span>
+                {state.filters.categories.map((categoryFilter, fk)=> <div onClick={()=>removeCategoryFilter(categoryFilter)} key={fk}><span>{categoryFilter}</span></div>)}
             </div>
             <span>CLEAR FILTER</span>
             <div>
                 <span>COLOR: </span>
                 <div className={styles.colourOptionsContainer}>
                     {availableColors?.map((color, i) => 
-                    <span onClick={()=> colorItemPress(color)} style={{ backgroundColor: `${color.toLowerCase()}`, width: 20, height: 20, borderRadius: 10 }} key={i}></span>)}
+                        <span onClick={()=> addColorFilter(color)} style={{ backgroundColor: `${color.toLowerCase()}`, width: 20, height: 20, borderRadius: 10 }} key={i}></span>)}
                 </div>
             </div>
             <div>
@@ -117,7 +100,9 @@ const Filter = () => {
             <div>
                 <span>CATEGORY: </span>
                 <div className={styles.colourOptionsContainer}>
-                    {availableCategories?.map((availableCategorie, k) => <span style={{ backgroundColor: 'lightgray'}} key={k}>{availableCategorie}</span>)}
+                    {availableCategories?.map((availableCategory, k) => 
+                        <span onClick={()=> addCategoryFilter(availableCategory.replace('E8 ', ''))} style={{ backgroundColor: 'lightgray'}} key={k}>{availableCategory.replace('E8 ', '')}</span>
+                    )}
                 </div>
             </div>
         </div>

@@ -3,6 +3,7 @@ import styles from '../styles/Products.module.css'
 import ProductCard from './ProductCard'
 import miista from '../pages/api/miista-export.json'
 import getProductsToDisplay from '../pages/api/getProductsToDisplay'
+import { useStateValue } from '../stateManagement/StateProvider';
 
 const Products = () => {
 
@@ -10,19 +11,21 @@ const Products = () => {
     const [activePageIndex, setActivePageIndex] = useState(0)
     const [productsToDisplay, setProductsToDisplay] = useState([])
     const numberOfProductsPerPage = 12
+    const [state, dispatch] = useStateValue()
 
     useEffect(() => {
-        const tempProductsToDisplay = getProductsToDisplay([], 0, numberOfProductsPerPage)
+        const tempProductsToDisplay  = getProductsToDisplay(state.filters, 0, numberOfProductsPerPage)
         setProductsToDisplay(tempProductsToDisplay)
 
         const numberOfProducts = miista.data.allContentfulProductPage.edges.length
         setPages([1, 2, 3, 4, 5, parseInt(numberOfProducts/numberOfProductsPerPage)])
-    }, [])
+
+    }, [state])
 
     function handlePagePress(page, pageIndex){
 
         const productIndex = (page*numberOfProductsPerPage)-numberOfProductsPerPage
-        const tempProductsToDisplay = getProductsToDisplay([], productIndex, numberOfProductsPerPage)
+        const tempProductsToDisplay = getProductsToDisplay(state.filters, productIndex, numberOfProductsPerPage)
 
         setActivePageIndex(pageIndex)
         setProductsToDisplay(tempProductsToDisplay)
